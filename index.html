@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Executive Lingua – Placement Test</title>
+<style>
+:root{--navy:#0a1628;--navy2:#0d1f3c;--gold:#c9a84c;--gold2:#e8c97a;--white:#f0f4ff;--gray:#8899bb;--correct:#2ecc71;--wrong:#e74c3c;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+
+/* TOP BAR */
+.top-bar{width:100%;background:var(--navy2);border-bottom:2px solid var(--gold);padding:12px 24px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100;}
+.top-logo-circle{width:38px;height:38px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:900;color:var(--gold);flex-shrink:0;letter-spacing:-1px;}
+.top-logo-text{display:flex;flex-direction:column;}
+.top-logo-title{font-size:1rem;font-weight:900;letter-spacing:2px;color:var(--white);text-transform:uppercase;line-height:1;}
+.top-logo-title span{color:var(--gold);}
+.top-logo-sub{font-size:0.62rem;color:var(--gold2);letter-spacing:1.5px;font-style:italic;}
+
+.main{width:100%;max-width:760px;padding:0 20px 40px;flex:1;}
+.screen{display:none;}
+.screen.active{display:block;}
+
+/* ── LANDING PAGE ── */
+#s-landing{padding:0;}
+
+.hero{position:relative;width:100%;border-radius:0 0 20px 20px;overflow:hidden;margin-bottom:0;}
+.hero img{width:100%;display:block;max-height:340px;object-fit:cover;object-position:center top;}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,22,40,0.15),rgba(10,22,40,0.85));}
+.hero-content{position:absolute;bottom:0;left:0;right:0;padding:28px 32px;text-align:center;}
+.hero-title{font-size:1.6rem;font-weight:900;color:var(--white);letter-spacing:2px;text-transform:uppercase;line-height:1.2;}
+.hero-title span{color:var(--gold);}
+.hero-sub{font-size:0.9rem;color:var(--gold2);font-style:italic;margin-top:6px;letter-spacing:1px;}
+
+.landing-body{padding:28px 20px 0;}
+
+.landing-intro{text-align:center;margin-bottom:32px;}
+.landing-intro h2{font-size:1.3rem;color:var(--gold);margin-bottom:10px;letter-spacing:1px;}
+.landing-intro p{font-size:0.95rem;color:var(--gray);line-height:1.8;max-width:580px;margin:0 auto;}
+
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px;}
+.feat-card{background:var(--navy2);border:1px solid rgba(201,168,76,0.25);border-radius:14px;padding:20px 14px;text-align:center;}
+.feat-icon{font-size:1.8rem;margin-bottom:10px;}
+.feat-title{font-size:0.85rem;font-weight:700;color:var(--gold);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase;}
+.feat-desc{font-size:0.78rem;color:var(--gray);line-height:1.6;}
+
+.steps{margin-bottom:32px;}
+.steps h3{font-size:1rem;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;text-align:center;}
+.step-row{display:flex;align-items:flex-start;gap:16px;margin-bottom:14px;}
+.step-num{width:36px;height:36px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:900;color:var(--gold);flex-shrink:0;}
+.step-text strong{display:block;color:var(--white);font-size:0.9rem;margin-bottom:2px;}
+.step-text span{font-size:0.82rem;color:var(--gray);}
+
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.3),transparent);margin:22px 0;}
+
+.btn{display:inline-block;padding:13px 28px;border-radius:8px;border:none;cursor:pointer;font-size:0.95rem;font-weight:700;letter-spacing:1px;transition:all 0.2s;text-align:center;text-decoration:none;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);width:100%;margin-top:10px;}
+.btn-gold:hover{opacity:0.9;transform:translateY(-1px);}
+.btn-outline{background:transparent;border:2px solid var(--gold);color:var(--gold);margin-top:10px;width:100%;}
+.btn-outline:hover{background:rgba(201,168,76,0.1);}
+
+/* ── REGISTER ── */
+.card{background:var(--navy2);border:1px solid rgba(201,168,76,0.3);border-radius:16px;padding:32px;box-shadow:0 8px 40px rgba(0,0,0,0.5);margin-top:24px;}
+h2{font-size:1.2rem;color:var(--gold);margin-bottom:18px;letter-spacing:1px;}
+.field{margin-bottom:16px;}
+label{font-size:0.82rem;color:var(--gray);display:block;margin-bottom:6px;letter-spacing:1px;text-transform:uppercase;}
+input{width:100%;padding:12px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.3);border-radius:8px;color:var(--white);font-size:1rem;outline:none;transition:border 0.2s;}
+input:focus{border-color:var(--gold);background:rgba(201,168,76,0.05);}
+
+/* ── QUESTION ── */
+.progress-bar-wrap{background:rgba(255,255,255,0.08);border-radius:99px;height:7px;margin-bottom:20px;overflow:hidden;}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:99px;transition:width 0.4s;}
+.level-badge{display:inline-block;padding:4px 16px;border-radius:99px;font-size:0.78rem;font-weight:900;letter-spacing:2px;border:2px solid var(--gold);color:var(--gold);background:rgba(201,168,76,0.08);}
+.q-category{font-size:0.7rem;color:var(--gold2);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;font-weight:700;}
+.q-text{font-size:1.08rem;line-height:1.7;margin-bottom:24px;color:var(--white);}
+.options-screen{background:var(--navy2);border:1px solid rgba(201,168,76,0.2);border-radius:14px;padding:22px;margin-top:14px;}
+.options-label{font-size:0.7rem;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;font-weight:700;}
+.options{display:grid;gap:10px;}
+.opt{padding:14px 18px;border-radius:10px;border:2px solid rgba(201,168,76,0.25);background:rgba(201,168,76,0.04);cursor:pointer;font-size:0.95rem;transition:all 0.2s;text-align:left;color:var(--white);font-weight:500;}
+.opt:hover:not(.disabled){border-color:var(--gold);background:rgba(201,168,76,0.12);color:var(--gold2);}
+.opt.correct{border-color:var(--correct)!important;background:rgba(46,204,113,0.15)!important;color:#2ecc71!important;}
+.opt.wrong{border-color:var(--wrong)!important;background:rgba(231,76,60,0.15)!important;color:#e74c3c!important;}
+.opt.disabled{cursor:default;}
+.feedback{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:0.88rem;display:none;font-weight:600;}
+.feedback.show{display:block;}
+.feedback.ok{background:rgba(46,204,113,0.12);color:var(--correct);border:1px solid rgba(46,204,113,0.3);}
+.feedback.err{background:rgba(231,76,60,0.12);color:var(--wrong);border:1px solid rgba(231,76,60,0.3);}
+.btn-next{margin-top:16px;display:none;}
+.btn-next.show{display:block;}
+
+/* ── RESULT ── */
+.result-level{font-size:3rem;font-weight:900;color:var(--gold);line-height:1;}
+.bars{margin:20px 0;}
+.bar-row{display:flex;align-items:center;margin-bottom:10px;gap:10px;}
+.bar-lbl{width:30px;font-size:0.8rem;color:var(--gold);font-weight:900;text-align:right;}
+.bar-track{flex:1;background:rgba(255,255,255,0.07);border-radius:99px;height:12px;overflow:hidden;border:1px solid rgba(201,168,76,0.15);}
+.bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--gold2));}
+.bar-pct{width:38px;font-size:0.78rem;color:var(--gold2);font-weight:700;}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0;}
+.info-card{background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);border-radius:10px;padding:14px;}
+.info-card strong{color:var(--gold);display:block;margin-bottom:4px;font-size:0.72rem;letter-spacing:1px;text-transform:uppercase;}
+.info-card span{font-size:0.9rem;color:var(--white);}
+.cefr-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:0.82rem;}
+.cefr-table th{color:var(--gold);padding:9px 10px;border-bottom:2px solid rgba(201,168,76,0.3);text-align:left;letter-spacing:1px;font-size:0.75rem;text-transform:uppercase;}
+.cefr-table td{padding:9px 10px;border-bottom:1px solid rgba(255,255,255,0.05);color:var(--white);}
+.cefr-table tr.highlight td{color:var(--gold2);font-weight:700;background:rgba(201,168,76,0.08);}
+.proj-box{background:rgba(201,168,76,0.08);border:2px solid rgba(201,168,76,0.35);border-radius:12px;padding:18px;margin-bottom:20px;}
+
+/* PRINT */
+@media print{
+  body{background:#fff!important;color:#000!important;display:block;}
+  .top-bar,.screen,.main{display:none!important;}
+  #print-area{display:block!important;}
+  @page{margin:12mm;}
+}
+#print-area{display:none;}
+.print-header{background:#0a1628;color:#fff;padding:20px 24px;border-radius:8px;margin-bottom:18px;display:flex;align-items:center;gap:16px;}
+.print-logo-circle{width:44px;height:44px;border:2px solid #c9a84c;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:900;color:#c9a84c;flex-shrink:0;}
+.print-header h1{font-size:1.3rem;color:#c9a84c;margin-bottom:2px;}
+.print-header p{font-size:0.75rem;color:#8899bb;}
+.print-section{margin-bottom:16px;}
+.print-section h3{font-size:0.8rem;color:#c9a84c;border-bottom:2px solid #c9a84c;padding-bottom:4px;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;}
+.print-info{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;}
+.print-info-item{background:#f5f5f5;padding:9px;border-radius:6px;font-size:0.82rem;}
+.print-info-item strong{display:block;font-size:0.68rem;color:#888;text-transform:uppercase;margin-bottom:2px;}
+.print-level-box{background:#0a1628;color:#fff;padding:14px;border-radius:8px;margin-bottom:14px;text-align:center;}
+.print-level-box .big{font-size:2.2rem;font-weight:900;color:#c9a84c;}
+.print-level-box .sub{font-size:0.82rem;color:#aaa;margin-top:4px;}
+.print-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+.print-bar-lbl{width:28px;font-size:0.78rem;font-weight:700;color:#c9a84c;}
+.print-bar-track{flex:1;background:#e0e0e0;border-radius:99px;height:11px;overflow:hidden;}
+.print-bar-fill{height:100%;border-radius:99px;background:#c9a84c;}
+.print-bar-pct{width:34px;font-size:0.75rem;color:#666;}
+.print-table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+.print-table th{background:#0a1628;color:#c9a84c;padding:7px 10px;text-align:left;}
+.print-table td{padding:7px 10px;border-bottom:1px solid #eee;color:#333;}
+.print-table tr.hl td{background:#fff8e7;font-weight:700;color:#b8860b;}
+.print-proj{background:#fff8e7;border:2px solid #c9a84c;border-radius:8px;padding:14px;margin-bottom:14px;}
+.print-proj .big{font-size:1.5rem;font-weight:900;color:#c9a84c;}
+.print-footer{text-align:center;font-size:0.7rem;color:#999;margin-top:18px;padding-top:10px;border-top:1px solid #ddd;}
+
+@media(max-width:500px){
+  .features{grid-template-columns:1fr;}
+  .info-grid{grid-template-columns:1fr;}
+  .hero-title{font-size:1.2rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="top-logo-circle">EL</div>
+  <div class="top-logo-text">
+    <div class="top-logo-title">Executive <span>Lingua</span></div>
+    <div class="top-logo-sub">* Excellence in Business Communication *</div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════════ LANDING ══════════════ -->
+<div class="screen active" id="s-landing">
+  <div class="hero">
+    <img src="https://i.imgur.com/ovS4uL9.jpeg" alt="Executive Lingua" onerror="this.style.display='none'"/>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-title">Business English <span>Placement Test</span></div>
+      <div class="hero-sub">* Excellence in Business Communication *</div>
+    </div>
+  </div>
+
+  <div class="landing-body">
+    <div class="landing-intro">
+      <h2>Descubra o seu nível de inglês corporativo</h2>
+      <p>Nosso teste adaptativo avalia seu nível de inglês para negócios com base no framework internacional <strong style="color:var(--gold)">CEFR</strong> — do A1 ao C2. Ao final, você recebe um relatório completo com seu nível atual e uma projeção de evolução após 120 horas de curso.</p>
+    </div>
+
+    <div class="features">
+      <div class="feat-card">
+        <div class="feat-icon">📊</div>
+        <div class="feat-title">Relatório Personalizado</div>
+        <div class="feat-desc">Receba seu nível atual e Can-Do Statements alinhados ao CEFR</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">⏱️</div>
+        <div class="feat-title">15 a 20 Minutos</div>
+        <div class="feat-desc">Rápido, objetivo e totalmente adaptativo ao seu desempenho</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🎯</div>
+        <div class="feat-title">120 Questões</div>
+        <div class="feat-desc">Gramática e vocabulário do mundo corporativo em 6 níveis</div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <h3>Como Funciona</h3>
+      <div class="step-row">
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <strong>Preencha seus dados</strong>
+          <span>Nome, e-mail e telefone para receber seu relatório</span>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">2</div>
+        <div class="step-text">
+          <strong>Responda as questões adaptativas</strong>
+          <span>O teste avança de nível conforme seu desempenho — do A1 ao C2</span>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">3</div>
+        <div class="step-text">
+          <strong>Receba seu relatório completo</strong>
+          <span>Exporte em PDF e entre em contato para conhecer nossos planos</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <button class="btn btn-gold" style="font-size:1.05rem;padding:16px;" onclick="show('s-register')">INICIAR MEU TESTE GRATUITO →</button>
+    <a href="https://wa.me/5511981759616?text=Olá!%20Gostaria%20de%20mais%20informações%20sobre%20os%20cursos%20da%20Executive%20Lingua." target="_blank" class="btn" style="display:block;margin-top:12px;background:#25D366;color:#fff;font-weight:700;letter-spacing:1px;">💬 FALAR COM UM ESPECIALISTA</a>
+  </div>
+</div>
+
+<!-- ══════════════ REGISTER ══════════════ -->
+<div class="screen" id="s-register">
+  <div class="card">
+    <h2>Seus Dados</h2>
+    <p style="font-size:0.88rem;color:var(--gray);margin-bottom:22px;">Preencha seus dados para iniciar o teste. Seu relatório será gerado ao final.</p>
+    <div class="field"><label>Nome Completo</label><input id="inp-name" placeholder="Seu nome completo" type="text"/></div>
+    <div class="field"><label>E-mail</label><input id="inp-email" placeholder="seu@email.com" type="email"/></div>
+    <div class="field"><label>Telefone / WhatsApp</label><input id="inp-phone" placeholder="+55 (11) 00000-0000" type="tel"/></div>
+    <button class="btn btn-gold" onclick="startTest()">COMEÇAR O TESTE →</button>
+    <button class="btn btn-outline" onclick="show('s-landing')">← VOLTAR</button>
+  </div>
+</div>
+
+<!-- ══════════════ QUESTION ══════════════ -->
+<div class="screen" id="s-question">
+  <div class="card">
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="prog-bar" style="width:0%"></div></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <span class="level-badge" id="lv-badge">A1</span>
+      <span style="font-size:0.78rem;color:var(--gray);" id="q-counter">Questão 1 de 120</span>
+    </div>
+    <div class="q-category" id="q-category">GRAMMAR</div>
+    <div class="q-text" id="q-text"></div>
+  </div>
+  <div class="options-screen">
+    <div class="options-label">Escolha a resposta correta:</div>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+    <button class="btn btn-gold btn-next" id="btn-next" onclick="nextQuestion()">PRÓXIMA QUESTÃO →</button>
+  </div>
+</div>
+
+<!-- ══════════════ RESULT ══════════════ -->
+<div class="screen" id="s-result">
+  <div class="card">
+    <div style="text-align:center;margin-bottom:24px;">
+      <div style="font-size:0.75rem;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">SEU NÍVEL ATUAL</div>
+      <div class="result-level" id="res-level"></div>
+      <div style="font-size:0.9rem;color:var(--gray);margin-top:8px;" id="res-label"></div>
+    </div>
+    <div class="divider"></div>
+    <div class="info-grid">
+      <div class="info-card"><strong>Nome</strong><span id="r-name"></span></div>
+      <div class="info-card"><strong>E-mail</strong><span id="r-email"></span></div>
+      <div class="info-card"><strong>Telefone</strong><span id="r-phone"></span></div>
+      <div class="info-card"><strong>Data</strong><span id="r-date"></span></div>
+    </div>
+    <div class="divider"></div>
+    <h2>Desempenho por Nível</h2>
+    <div class="bars" id="bars-area"></div>
+    <div class="divider"></div>
+    <h2>CEFR Can-Do Statements</h2>
+    <table class="cefr-table" id="cefr-table"></table>
+    <div class="divider"></div>
+    <div class="proj-box">
+      <div style="color:var(--gold);font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;font-weight:900;margin-bottom:8px;">📈 Nível Projetado Após 120h / 1 Ano de Curso</div>
+      <div style="font-size:1.7rem;font-weight:900;color:var(--gold2);" id="proj-level"></div>
+      <div style="font-size:0.83rem;color:var(--gray);margin-top:6px;" id="proj-desc"></div>
+    </div>
+    <button class="btn btn-gold no-print" onclick="exportPDF()">⬇ EXPORTAR RELATÓRIO EM PDF</button>
+    <a href="https://wa.me/5511981759616?text=Olá!%20Acabei%20de%20fazer%20o%20Placement%20Test%20da%20Executive%20Lingua%20e%20gostaria%20de%20mais%20informações." target="_blank" class="btn no-print" style="display:block;margin-top:10px;background:#25D366;color:#fff;text-decoration:none;font-weight:700;font-size:0.95rem;letter-spacing:1px;">💬 FALAR COM UM ESPECIALISTA NO WHATSAPP</a>
+    <button class="btn btn-outline no-print" style="margin-top:10px;" onclick="show('s-landing')">← VOLTAR AO INÍCIO</button>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<!-- PRINT AREA -->
+<div id="print-area">
+  <div class="print-header">
+    <div class="print-logo-circle">EL</div>
+    <div>
+      <h1>EXECUTIVE LINGUA</h1>
+      <p>* Excellence in Business Communication * — Business English Placement Test — Relatório Oficial</p>
+      <p id="p-date"></p>
+    </div>
+  </div>
+  <div class="print-section">
+    <h3>Dados do Aluno</h3>
+    <div class="print-info">
+      <div class="print-info-item"><strong>Nome</strong><span id="p-name"></span></div>
+      <div class="print-info-item"><strong>E-mail</strong><span id="p-email"></span></div>
+      <div class="print-info-item"><strong>Telefone</strong><span id="p-phone"></span></div>
+    </div>
+  </div>
+  <div class="print-section">
+    <h3>Nível Atual</h3>
+    <div class="print-level-box">
+      <div class="big" id="p-level"></div>
+      <div class="sub" id="p-label"></div>
+    </div>
+  </div>
+  <div class="print-section">
+    <h3>Desempenho por Nível</h3>
+    <div id="p-bars"></div>
+  </div>
+  <div class="print-section">
+    <h3>Nível Projetado Após 120h / 1 Ano</h3>
+    <div class="print-proj">
+      <div class="big" id="p-proj-level"></div>
+      <div style="font-size:0.83rem;color:#666;margin-top:4px;" id="p-proj-desc"></div>
+    </div>
+  </div>
+  <div class="print-section">
+    <h3>CEFR Can-Do Statements</h3>
+    <table class="print-table" id="p-cefr"></table>
+  </div>
+  <div class="print-footer">
+    Executive Lingua — Excellence in Business Communication<br/>
+    Este relatório é confidencial e emitido exclusivamente para fins de nivelamento.
+  </div>
+</div>
+
+<script>
+const QUESTIONS={A1:[{q:"What do you say when you meet someone for the first time in a business setting?",opts:["Nice to meet you.","How are you doing, man?","What's up?","See you later."],ans:0,cat:"VOCABULARY"},{q:"Choose the correct sentence: 'I ___ in the marketing department.'",opts:["works","working","work","worked"],ans:2,cat:"GRAMMAR"},{q:"What does 'CEO' stand for?",opts:["Chief Education Officer","Central Executive Office","Chief Executive Officer","Company Executive Official"],ans:2,cat:"VOCABULARY"},{q:"Which phrase is used to greet someone in a formal business email?",opts:["Hey there!","Yo!","Dear Mr. Johnson,","Wassup?"],ans:2,cat:"VOCABULARY"},{q:"What is the correct way to say your job title?",opts:["I am working as a manager.","I do manager.","I am a manager.","My job is do manager."],ans:2,cat:"GRAMMAR"},{q:"'Please ___ a seat.' — which word completes this sentence?",opts:["do","make","take","get"],ans:2,cat:"VOCABULARY"},{q:"What does 'HQ' mean in a business context?",opts:["High Quality","Headquarters","Human Query","Half Quota"],ans:1,cat:"VOCABULARY"},{q:"'The meeting starts ___ 9 o'clock.' Choose the correct preposition.",opts:["in","on","at","by"],ans:2,cat:"GRAMMAR"},{q:"Which word means the opposite of 'employer'?",opts:["Manager","Employee","Boss","Director"],ans:1,cat:"VOCABULARY"},{q:"'I ___ an email right now.' Choose the correct form.",opts:["send","am sending","sends","sent"],ans:1,cat:"GRAMMAR"},{q:"Which phrase do you use when you don't understand something?",opts:["Whatever.","Could you repeat that, please?","I don't care.","Forget it."],ans:1,cat:"VOCABULARY"},{q:"What is a 'deadline'?",opts:["A type of meeting","The final date to complete something","A company policy","A business lunch"],ans:1,cat:"VOCABULARY"},{q:"Choose the polite way to ask for help:",opts:["Give me the file.","I need the file now.","Could you please send me the file?","File, please."],ans:2,cat:"VOCABULARY"},{q:"'We have a ___ at 3 pm today.'",opts:["party","meeting","holiday","flight"],ans:1,cat:"VOCABULARY"},{q:"Which is correct? 'She ___ in London every month.'",opts:["travel","travels","is travelling","have travelled"],ans:1,cat:"GRAMMAR"},{q:"What does 'agenda' mean in business?",opts:["A type of contract","A list of topics to discuss in a meeting","A financial report","A business card"],ans:1,cat:"VOCABULARY"},{q:"'Thank you for your ___.' — formal closing word?",opts:["help","assistance","thing","doing"],ans:1,cat:"VOCABULARY"},{q:"Which sentence is correct?",opts:["I works here since 2020.","I am working here since 2020.","I have worked here since 2020.","I work here since 2020."],ans:2,cat:"GRAMMAR"},{q:"What does 'invoice' mean?",opts:["A business lunch","A document requesting payment","A company meeting","An employment contract"],ans:1,cat:"VOCABULARY"},{q:"Which is a correct way to give your phone number?",opts:["My number is 9 8 7 6 5.","I have the number 9-8-7-6-5.","Call me at 9-8-7-6-5.","All of the above."],ans:3,cat:"VOCABULARY"}],A2:[{q:"'By the end of the week, please ___ the report.'",opts:["submit","submitted","submitting","have submitted"],ans:0,cat:"GRAMMAR"},{q:"Which phrase is used to disagree politely in a meeting?",opts:["That's wrong!","I totally disagree.","I see your point, but I think...","No way."],ans:2,cat:"VOCABULARY"},{q:"What does 'KPI' stand for?",opts:["Key Performance Indicator","Known Policy Issue","Key Product Investment","Knowledge Process Integration"],ans:0,cat:"VOCABULARY"},{q:"Choose the correct sentence for a formal email:",opts:["I am writing with regard to your inquiry.","I write about your question.","This email is for your question.","Writing to you about your thing."],ans:0,cat:"GRAMMAR"},{q:"'We need to ___ costs this quarter.'",opts:["raise","reduce","expand","hire"],ans:1,cat:"VOCABULARY"},{q:"What does 'on behalf of' mean?",opts:["In addition to","Instead of / representing","Because of","Together with"],ans:1,cat:"VOCABULARY"},{q:"Which phrase means 'to call someone back'?",opts:["Call over","Call through","Return someone's call","Give a call"],ans:2,cat:"VOCABULARY"},{q:"'The project is ___ schedule.' (meaning: on time)",opts:["off","behind","on","over"],ans:2,cat:"VOCABULARY"},{q:"What is a 'stakeholder'?",opts:["A person who owns the building","Anyone with an interest in a project or company","A senior manager only","A financial auditor"],ans:1,cat:"VOCABULARY"},{q:"'The report ___ yesterday.' — correct passive:",opts:["was sent","is sending","sent","has send"],ans:0,cat:"GRAMMAR"},{q:"Choose the correct phrase to open a presentation:",opts:["Listen up everyone.","Good morning. Today I'd like to talk about...","Hey guys, so basically...","Let's get this over with."],ans:1,cat:"VOCABULARY"},{q:"'Could you ___ on that last point?'",opts:["elaborate","talk","say","do"],ans:0,cat:"VOCABULARY"},{q:"What does 'outsource' mean?",opts:["To hire internally","To send work to an external company","To reduce the team","To cancel a contract"],ans:1,cat:"VOCABULARY"},{q:"'I ___ the client before the meeting ends.'",opts:["will contact","am contacting","contact","have contacted"],ans:0,cat:"GRAMMAR"},{q:"Which phrase means 'to discuss informally'?",opts:["Run a meeting","Touch base","File a report","Close a deal"],ans:1,cat:"VOCABULARY"},{q:"What does 'fiscal year' mean?",opts:["A holiday period","A 12-month financial period used for accounting","The month of January only","A tax deadline"],ans:1,cat:"VOCABULARY"},{q:"'Please ___ the attached document.'",opts:["look at","check out","review","see"],ans:2,cat:"VOCABULARY"},{q:"Which sentence is correct?",opts:["We discussed about the budget.","We discussed the budget.","We discussed of the budget.","We have discussed about budget."],ans:1,cat:"GRAMMAR"},{q:"What does 'bottom line' mean in business?",opts:["The last sentence of a contract","The net profit or the most important point","The company's address","A type of financial chart"],ans:1,cat:"VOCABULARY"},{q:"'I look forward to ___ from you.'",opts:["hear","heard","hearing","to hear"],ans:2,cat:"GRAMMAR"}],B1:[{q:"'We need to ___ a compromise between quality and cost.'",opts:["make","reach","do","find"],ans:1,cat:"VOCABULARY"},{q:"What does 'leverage' mean in business?",opts:["To borrow money only","To use something to maximum advantage","To reduce staff","To sign a contract"],ans:1,cat:"VOCABULARY"},{q:"Best response when a client is unhappy:",opts:["That's not our problem.","I understand your concern and we will resolve this immediately.","You're wrong.","Check the contract."],ans:1,cat:"VOCABULARY"},{q:"'___ to the increasing demand, we have expanded our team.'",opts:["Despite","Owing","Because","In spite of"],ans:1,cat:"GRAMMAR"},{q:"What does 'due diligence' mean?",opts:["Being punctual","A thorough investigation before a business decision","Following company rules","A payment method"],ans:1,cat:"VOCABULARY"},{q:"Which phrase means 'to delay a decision'?",opts:["Wrap up","Table an issue","Fast-track","Close the loop"],ans:1,cat:"VOCABULARY"},{q:"'The merger ___ by the board last quarter.'",opts:["was approved","approved","has approved","is approving"],ans:0,cat:"GRAMMAR"},{q:"What is 'ROI'?",opts:["Risk of Investment","Return on Investment","Rate of Inflation","Revenue on Increase"],ans:1,cat:"VOCABULARY"},{q:"Correct reported speech:",opts:["She said she will attend.","She said she would attend.","She said she attends.","She said she is attending."],ans:1,cat:"GRAMMAR"},{q:"'We are ___ a new product line.'",opts:["rolling in","rolling out","rolling over","rolling back"],ans:1,cat:"VOCABULARY"},{q:"What does 'benchmark' mean?",opts:["A target salary","A standard used for comparison","A type of presentation","A meeting agenda"],ans:1,cat:"VOCABULARY"},{q:"'If we ___ the deadline, we ___ the bonus.'",opts:["meet / will receive","met / receive","meet / receive","had met / would receive"],ans:0,cat:"GRAMMAR"},{q:"What is a 'pitch' in business?",opts:["A sports field","A presentation to persuade clients or investors","A formal report","A company policy"],ans:1,cat:"VOCABULARY"},{q:"'She ___ the proposal before the board meeting starts.'",opts:["will have submitted","will submit","submits","submitted"],ans:0,cat:"GRAMMAR"},{q:"Which phrase means to end a meeting?",opts:["Touch base","Wrap up","Kick off","Break down"],ans:1,cat:"VOCABULARY"},{q:"'Despite ___ a small team, we delivered on time.'",opts:["have","having","had","to have"],ans:1,cat:"GRAMMAR"},{q:"What does 'scalable' mean?",opts:["Easy to measure","Able to grow and expand efficiently","Requires many staff","Related to sales"],ans:1,cat:"VOCABULARY"},{q:"'The data ___ that sales have improved.'",opts:["indicates","indicate","indicating","is indicate"],ans:0,cat:"GRAMMAR"},{q:"What is a 'conflict of interest'?",opts:["A disagreement between colleagues","When personal interests affect professional decisions","A legal dispute","A budget problem"],ans:1,cat:"VOCABULARY"},{q:"'___ we launch next month, we risk missing targets.'",opts:["Unless","Although","While","Since"],ans:0,cat:"GRAMMAR"}],B2:[{q:"Which phrase means 'to negotiate a better deal'?",opts:["Strike a bargain","Close the loop","Kick the can","Touch base"],ans:0,cat:"VOCABULARY"},{q:"'___ the economic downturn, the company maintained profitability.'",opts:["Because of","Notwithstanding","Although","Due to"],ans:1,cat:"GRAMMAR"},{q:"What does 'synergy' mean in corporate context?",opts:["A financial loss","Combined efforts producing greater results","An internal audit","A type of contract"],ans:1,cat:"VOCABULARY"},{q:"Most formal way to express disagreement:",opts:["That's completely wrong.","I respectfully disagree and would like to propose an alternative.","I don't think so.","Not really."],ans:1,cat:"VOCABULARY"},{q:"'The initiative ___ without board approval.'",opts:["cannot proceed","cannot be proceeded","cannot proceeding","not can proceed"],ans:0,cat:"GRAMMAR"},{q:"What is 'cash flow'?",opts:["The company's total profit","The movement of money in and out of a business","A type of investment","A credit limit"],ans:1,cat:"VOCABULARY"},{q:"'___ the project is delayed, all stakeholders must be notified.'",opts:["In the event that","Moreover","As well as","Rather than"],ans:0,cat:"GRAMMAR"},{q:"What does 'pivot' mean in a startup?",opts:["To expand internationally","To change business strategy based on feedback","To reduce costs","To hire new staff"],ans:1,cat:"VOCABULARY"},{q:"'Had we ___ earlier, we could have avoided the loss.'",opts:["intervene","intervened","intervening","to intervene"],ans:1,cat:"GRAMMAR"},{q:"What does 'value proposition' mean?",opts:["A financial offer","The unique benefit a company offers customers","A marketing budget","A sales target"],ans:1,cat:"VOCABULARY"},{q:"Which phrase means 'to analyze costs and benefits'?",opts:["Run the numbers","Wrap up","Table the issue","Kick off"],ans:0,cat:"VOCABULARY"},{q:"'The acquisition ___ subject to regulatory approval.'",opts:["is","are","be","being"],ans:0,cat:"GRAMMAR"},{q:"What is 'brand equity'?",opts:["The company's stock price","The value derived from brand recognition and reputation","A marketing campaign","A product patent"],ans:1,cat:"VOCABULARY"},{q:"Best use of hedging language:",opts:["This will definitely increase revenue.","This might potentially contribute to revenue growth.","Revenue goes up.","We make more money."],ans:1,cat:"VOCABULARY"},{q:"What does 'deliverable' mean?",opts:["A package sent to clients","A tangible output expected from a project","A team meeting","A performance review"],ans:1,cat:"VOCABULARY"},{q:"'___ to ensure compliance, the audit team reviewed all contracts.'",opts:["In order","So as","So that","In order to"],ans:3,cat:"GRAMMAR"},{q:"What does 'attrition' mean in HR?",opts:["Employee training","The gradual reduction of staff through resignation or retirement","A hiring freeze","A performance bonus"],ans:1,cat:"VOCABULARY"},{q:"Correct complex sentence:",opts:["Although profitable, despite high costs, the company expanded.","Despite incurring high costs, the company remained profitable and expanded.","The company, profitable it was, and expanded.","Expanding the company profits despite costs."],ans:1,cat:"GRAMMAR"},{q:"What is an NDA?",opts:["A hiring contract","A contract keeping information confidential","A financial report","A board resolution"],ans:1,cat:"VOCABULARY"},{q:"'The board ___ that the CFO ___ a revised budget.'",opts:["requested / submits","requested / submit","has requested / submitted","requested / submitted"],ans:1,cat:"GRAMMAR"}],C1:[{q:"Best phrase to convey urgency without confrontation:",opts:["I need this now.","I would appreciate your prompt attention to this matter.","Do it fast.","Hurry up."],ans:1,cat:"VOCABULARY"},{q:"What does 'paradigm shift' mean?",opts:["A minor policy change","A fundamental transformation in approach or thinking","A new product launch","A budget revision"],ans:1,cat:"VOCABULARY"},{q:"What is 'market saturation'?",opts:["High demand for a product","When a market has been maximally penetrated with little room for growth","A new product entering the market","A pricing strategy"],ans:1,cat:"VOCABULARY"},{q:"What does 'fiduciary duty' mean?",opts:["A tax obligation","The legal obligation to act in another party's best interest","A financial audit","A partnership agreement"],ans:1,cat:"VOCABULARY"},{q:"What is 'arbitrage' in finance?",opts:["A type of contract dispute","Profiting from price differences in different markets","A merger strategy","A stock dividend"],ans:1,cat:"VOCABULARY"},{q:"Most sophisticated use of hedging:",opts:["This will work.","It would appear that the data tends to suggest a moderate correlation.","Maybe it works.","The data shows something."],ans:1,cat:"GRAMMAR"},{q:"What does 'economies of scale' mean?",opts:["Charging more for larger orders","Cost advantages from increased production volume","International expansion","Reducing staff"],ans:1,cat:"VOCABULARY"},{q:"What is a 'bear market'?",opts:["A growing market","A market in prolonged decline","A volatile market","A regulated market"],ans:1,cat:"VOCABULARY"},{q:"What does 'amortization' mean?",opts:["A type of investment","The gradual repayment of debt or writing off of an asset over time","A company merger","A dividend payment"],ans:1,cat:"VOCABULARY"},{q:"What is 'corporate governance'?",opts:["A marketing strategy","The system of rules and practices directing a company","A financial model","An HR policy"],ans:1,cat:"VOCABULARY"},{q:"Which phrase means 'to identify the root cause'?",opts:["Drill down","Touch base","Wrap up","Fast-track"],ans:0,cat:"VOCABULARY"},{q:"What does 'liquidity' mean in finance?",opts:["A company's reputation","How easily assets can be converted to cash","A loan type","A dividend policy"],ans:1,cat:"VOCABULARY"},{q:"What is 'intellectual property'?",opts:["Company computers","Creations of the mind protected by law","A type of contract","A financial asset"],ans:1,cat:"VOCABULARY"},{q:"Best diplomatic challenge to an assumption:",opts:["That's not true.","I wonder whether we've fully considered all the implications of that assumption.","Wrong!","Think again."],ans:1,cat:"VOCABULARY"},{q:"Best nuanced concession:",opts:["You're right, we failed.","While I acknowledge the merit of that argument, I must highlight certain limitations.","OK fine.","Maybe you're right."],ans:1,cat:"GRAMMAR"},{q:"'The proposal, ___ initially met with skepticism, ___ ultimately endorsed.'",opts:["which / was","that / was","which / is","who / was"],ans:0,cat:"GRAMMAR"},{q:"'___ the restructuring plan ___ implemented without resistance, the board remained cautious.'",opts:["Even though / was","Despite / was","Although / was","Even if / is"],ans:2,cat:"GRAMMAR"},{q:"'The committee ___ to reach consensus, ultimately ___ to an external mediator.'",opts:["failed / resorting","failed / resorting to","failed / resort","had failed / resort"],ans:1,cat:"GRAMMAR"},{q:"'___ the contract been reviewed, we ___ the liability issue earlier.'",opts:["Had / would have identified","If / would identify","Had / identified","Should / would have identified"],ans:0,cat:"GRAMMAR"},{q:"'The analyst recommended that the company ___ its exposure to high-risk assets.'",opts:["reduce","reduces","reducing","would reduce"],ans:0,cat:"GRAMMAR"}],C2:[{q:"Best phrase for conditional risk in a board presentation:",opts:["This might be bad.","Contingent upon market conditions stabilizing, the venture carries a residual but manageable risk.","It's risky.","Could be a problem."],ans:1,cat:"VOCABULARY"},{q:"What is 'regulatory arbitrage'?",opts:["Legal dispute resolution","Exploiting differences in regulations across jurisdictions","A financial audit technique","An investment strategy"],ans:1,cat:"VOCABULARY"},{q:"Most precise hedging in a financial report:",opts:["Sales went up.","Revenue exhibited a modest yet statistically significant upward trajectory in Q3.","We sold more.","Revenue increased a bit."],ans:1,cat:"GRAMMAR"},{q:"What does 'systemic risk' mean?",opts:["Risk in one department","Risk capable of collapsing an entire financial system","A single company's bankruptcy risk","An insurance risk"],ans:1,cat:"VOCABULARY"},{q:"What is 'Basel III'?",opts:["A trade agreement","An international regulatory framework for bank capital adequacy","A financial product","A merger protocol"],ans:1,cat:"VOCABULARY"},{q:"Best nuanced counterargument in a board meeting:",opts:["I disagree.","With all due respect, I'd posit that the evidence, while compelling, does not unequivocally support that conclusion.","You're wrong.","That's not right."],ans:1,cat:"VOCABULARY"},{q:"What does 'quantitative easing' mean?",opts:["Reducing interest rates","A central bank expanding money supply by purchasing assets","Increasing taxes","A trade policy"],ans:1,cat:"VOCABULARY"},{q:"What is 'CSR' at its most strategic level?",opts:["Charity donations only","Integrating social and environmental concerns into core business strategy","A PR campaign","An HR initiative"],ans:1,cat:"VOCABULARY"},{q:"Best phrase to signal a paradigm-level challenge:",opts:["I think you're wrong.","This fundamentally calls into question the underlying assumptions of the proposed framework.","That doesn't work.","Disagree."],ans:1,cat:"VOCABULARY"},{q:"What is 'transfer pricing'?",opts:["Shipping costs","The price set for transactions between subsidiaries, often for tax purposes","A type of invoice","A procurement strategy"],ans:1,cat:"VOCABULARY"},{q:"'___ robust as the methodology may appear, it is not ___ free from potential biases.'",opts:["As / entirely","So / totally","How / quite","While / completely"],ans:0,cat:"GRAMMAR"},{q:"What is 'forward guidance' in central banking?",opts:["A financial forecast for clients","Communication about future monetary policy intentions to influence expectations","A trading strategy","An investment recommendation"],ans:1,cat:"VOCABULARY"},{q:"Best phrase for deferred disagreement:",opts:["I disagree completely.","I would reserve judgment on that point pending a more thorough analysis of the available data.","Maybe not.","Let's wait."],ans:1,cat:"VOCABULARY"},{q:"What does 'moral hazard' mean?",opts:["Unethical behavior","When a party takes more risk because they are protected from consequences","A legal violation","A tax evasion method"],ans:1,cat:"VOCABULARY"},{q:"'The board ___ that, notwithstanding the short-term losses, the strategic rationale ___ sound.'",opts:["concluded / remained","concluded / remain","has concluded / remains","concluded / is remained"],ans:0,cat:"GRAMMAR"},{q:"What is 'EBITDA'?",opts:["A type of contract","Earnings Before Interest, Taxes, Depreciation and Amortization","A financial risk model","An investment fund"],ans:1,cat:"VOCABULARY"},{q:"'The divestiture, ___ initially resisted by shareholders, ___ ultimately vindicated by a 40% increase in share price.'",opts:["which / was","that / was","which / is","who / was"],ans:0,cat:"GRAMMAR"},{q:"What is 'stagflation'?",opts:["Rapid economic growth","A simultaneous occurrence of stagnant growth and high inflation","A type of recession","A trade surplus"],ans:1,cat:"VOCABULARY"},{q:"Best executive-level written communication:",opts:["We need to think about how to make things better for customers.","I'd like to flag a concern.","We respectfully propose a strategic review of our client engagement framework to optimize long-term retention outcomes.","Let's improve customer stuff."],ans:2,cat:"VOCABULARY"},{q:"'___ one could argue that short-termism drives shareholder value, the long-term consequences for sustainability are ___.'",opts:["While / profound","Although / deep","Even if / large","Despite / many"],ans:0,cat:"GRAMMAR"}]};
+
+const CEFR={A1:{label:"Beginner",canDo:"Compreende e usa vocabulário básico de negócios e lida com interações simples no ambiente de trabalho.",projected:"A2"},A2:{label:"Elementary",canDo:"Realiza transações comerciais rotineiras e comunicações escritas simples.",projected:"B1"},B1:{label:"Intermediate",canDo:"Participa de reuniões sobre tópicos familiares e escreve e-mails corporativos de rotina.",projected:"B2"},B2:{label:"Upper-Intermediate",canDo:"Interage com confiança na maioria das situações de negócios e produz relatórios claros e detalhados.",projected:"C1"},C1:{label:"Advanced",canDo:"Expressa ideias com fluência e produz documentos corporativos bem estruturados e sofisticados.",projected:"C2"},C2:{label:"Proficient / Mastery",canDo:"Comunica-se com precisão, nuance e sofisticação em qualquer contexto corporativo.",projected:"C2 +"}};
+const LEVELS=["A1","A2","B1","B2","C1","C2"];
+let student={},currentLevel=0,levelIndex=0,pool=[],levelResults={A1:[],A2:[],B1:[],B2:[],C1:[],C2:[]};
+
+function shuffle(a){return[...a].sort(()=>Math.random()-0.5);}
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active");}
+
+function startTest(){
+  const n=document.getElementById("inp-name").value.trim(),e=document.getElementById("inp-email").value.trim(),p=document.getElementById("inp-phone").value.trim();
+  if(!n||!e||!p){alert("Por favor, preencha todos os campos.");return;}
+  student={name:n,email:e,phone:p,date:new Date().toLocaleDateString("pt-BR")};
+  currentLevel=0;levelResults={A1:[],A2:[],B1:[],B2:[],C1:[],C2:[]};
+  loadLevel();show("s-question");
+}
+
+function loadLevel(){pool=shuffle(QUESTIONS[LEVELS[currentLevel]]).slice(0,20);levelIndex=0;showQuestion();}
+
+function showQuestion(){
+  const lv=LEVELS[currentLevel],q=pool[levelIndex];
+  const done=currentLevel*20+levelIndex+1;
+  document.getElementById("prog-bar").style.width=(done/120*100)+"%";
+  document.getElementById("lv-badge").textContent=lv;
+  document.getElementById("q-counter").textContent="Questão "+done+" de 120";
+  document.getElementById("q-category").textContent=q.cat;
+  document.getElementById("q-category").style.color=q.cat==="GRAMMAR"?"#e8c97a":"#c9a84c";
+  document.getElementById("q-text").textContent=q.q;
+  const correctOpt=q.opts[q.ans];
+  const opts=document.getElementById("options");
+  opts.innerHTML="";
+  shuffle(q.opts).forEach(o=>{
+    const b=document.createElement("button");b.className="opt";b.textContent=o;
+    b.onclick=()=>selectAnswer(o,correctOpt,b,opts);
+    opts.appendChild(b);
+  });
+  document.getElementById("feedback").className="feedback";
+  document.getElementById("btn-next").className="btn btn-gold btn-next";
+}
+
+function selectAnswer(chosen,correct,btn,opts){
+  opts.querySelectorAll(".opt").forEach(b=>{b.classList.add("disabled");if(b.textContent===correct)b.classList.add("correct");});
+  const ok=chosen===correct;
+  if(!ok)btn.classList.add("wrong");
+  const fb=document.getElementById("feedback");
+  fb.className="feedback "+(ok?"ok":"err")+" show";
+  fb.textContent=ok?"✓ Correto! Muito bem.":'✗ Resposta correta: "'+correct+'"';
+  levelResults[LEVELS[currentLevel]].push(ok?1:0);
+  document.getElementById("btn-next").className="btn btn-gold btn-next show";
+}
+
+function nextQuestion(){
+  levelIndex++;
+  const lv=LEVELS[currentLevel],res=levelResults[lv];
+  if(levelIndex>=pool.length){
+    const pct=res.reduce((a,b)=>a+b,0)/res.length;
+    if(pct>=0.6&&currentLevel<LEVELS.length-1){currentLevel++;loadLevel();}
+    else showResult();
+    return;
+  }
+  showQuestion();
+}
+
+function showResult(){
+  let finalLevel="A1";
+  for(let i=LEVELS.length-1;i>=0;i--){const r=levelResults[LEVELS[i]];if(r.length>0&&r.reduce((a,b)=>a+b,0)/r.length>=0.6){finalLevel=LEVELS[i];break;}}
+  const info=CEFR[finalLevel];
+  document.getElementById("res-level").textContent=finalLevel;
+  document.getElementById("res-label").textContent=info.label+" — "+info.canDo;
+  document.getElementById("r-name").textContent=student.name;
+  document.getElementById("r-email").textContent=student.email;
+  document.getElementById("r-phone").textContent=student.phone;
+  document.getElementById("r-date").textContent=student.date;
+  document.getElementById("proj-level").textContent=info.projected;
+  document.getElementById("proj-desc").textContent="Após aproximadamente 120 horas de aulas (≈ 1 ano), alunos no nível "+finalLevel+" normalmente atingem o nível "+info.projected+".";
+
+  const bars=document.getElementById("bars-area");bars.innerHTML="";
+  LEVELS.forEach(lv=>{const r=levelResults[lv];if(!r.length)return;const pct=Math.round(r.reduce((a,b)=>a+b,0)/r.length*100);bars.innerHTML+='<div class="bar-row"><div class="bar-lbl">'+lv+'</div><div class="bar-track"><div class="bar-fill" style="width:'+pct+'%"></div></div><div class="bar-pct">'+pct+'%</div></div>';});
+
+  const tbl=document.getElementById("cefr-table");tbl.innerHTML="<tr><th>Nível</th><th>Can-Do</th><th>Resultado</th></tr>";
+  LEVELS.forEach(lv=>{const r=levelResults[lv];let st="—";if(r.length){const p=Math.round(r.reduce((a,b)=>a+b,0)/r.length*100);st=p>=60?"✓ Aprovado ("+p+"%)":"✗ "+p+"%";}tbl.innerHTML+='<tr class="'+(lv===finalLevel?"highlight":"")+'"><td>'+lv+"</td><td>"+CEFR[lv].canDo+"</td><td>"+st+"</td></tr>";});
+
+  document.getElementById("p-date").textContent="Data: "+student.date;
+  document.getElementById("p-name").textContent=student.name;
+  document.getElementById("p-email").textContent=student.email;
+  document.getElementById("p-phone").textContent=student.phone;
+  document.getElementById("p-level").textContent=finalLevel;
+  document.getElementById("p-label").textContent=info.label+" — "+info.canDo;
+  document.getElementById("p-proj-level").textContent=info.projected;
+  document.getElementById("p-proj-desc").textContent="Após ~120 horas de aulas (≈ 1 ano), alunos no nível "+finalLevel+" normalmente atingem o nível "+info.projected+".";
+
+  const pbars=document.getElementById("p-bars");pbars.innerHTML="";
+  LEVELS.forEach(lv=>{const r=levelResults[lv];if(!r.length)return;const pct=Math.round(r.reduce((a,b)=>a+b,0)/r.length*100);pbars.innerHTML+='<div class="print-bar-row"><div class="print-bar-lbl">'+lv+'</div><div class="print-bar-track"><div class="print-bar-fill" style="width:'+pct+'%"></div></div><div class="print-bar-pct">'+pct+'%</div></div>';});
+
+  const pcefr=document.getElementById("p-cefr");pcefr.innerHTML="<tr><th>Nível</th><th>Can-Do</th><th>Resultado</th></tr>";
+  LEVELS.forEach(lv=>{const r=levelResults[lv];let st="Não atingido";if(r.length){const p=Math.round(r.reduce((a,b)=>a+b,0)/r.length*100);st=p>=60?"Aprovado ("+p+"%)":p+"%";}pcefr.innerHTML+='<tr class="'+(lv===finalLevel?"hl":"")+'"><td>'+lv+"</td><td>"+CEFR[lv].canDo+"</td><td>"+st+"</td></tr>";});
+
+  show("s-result");
+}
+
+function exportPDF(){
+  document.querySelectorAll(".screen").forEach(s=>s.style.display="none");
+  document.querySelector(".main").style.display="none";
+  document.getElementById("print-area").style.display="block";
+  document.body.style.background="#fff";
+  window.print();
+  setTimeout(()=>{
+    document.body.style.background="";
+    document.getElementById("print-area").style.display="none";
+    document.querySelector(".main").style.display="flex";
+    document.querySelector(".main").style.flexDirection="column";
+    document.getElementById("s-result").style.display="block";
+    document.getElementById("s-result").classList.add("active");
+  },600);
+}
+</script>
+</body>
+</html>
