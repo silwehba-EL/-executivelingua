@@ -345,6 +345,14 @@ const CEFR={A1:{label:"Beginner",canDo:"Compreende e usa vocabulário básico de
 const LEVELS=["A1","A2","B1","B2","C1","C2"];
 let student={},currentLevel=0,levelIndex=0,pool=[],levelResults={A1:[],A2:[],B1:[],B2:[],C1:[],C2:[]};
 
+// ── COLE AQUI A URL DO SEU GOOGLE APPS SCRIPT (termina com /exec) ──
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby0TM8IytEfNVdAbSzmfm0r3EBqOW-qzL-JuFX4nYImBX0_8_mySQpnRgXtcAGSTNyO/exec";
+
+function logToSheet(payload){
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf("COLE_AQUI")===0) return;
+  fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)}).catch(()=>{});
+}
+
 function shuffle(a){return[...a].sort(()=>Math.random()-0.5);}
 function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active");}
 
@@ -388,6 +396,7 @@ function selectAnswer(chosen,correct,btn,opts){
   fb.textContent=ok?"✓ Correto! Muito bem.":'✗ Resposta correta: "'+correct+'"';
   levelResults[LEVELS[currentLevel]].push(ok?1:0);
   document.getElementById("btn-next").className="btn btn-gold btn-next show";
+  logToSheet({type:"resposta",student:student.name,email:student.email,phone:student.phone,date:student.date,level:LEVELS[currentLevel],category:q.cat,question:q.q,selected:chosen,correctAnswer:correct,isCorrect:ok});
 }
 
 function nextQuestion(){
@@ -435,6 +444,9 @@ function showResult(){
 
   const pcefr=document.getElementById("p-cefr");pcefr.innerHTML="<tr><th>Nível</th><th>Can-Do</th><th>Resultado</th></tr>";
   LEVELS.forEach(lv=>{const r=levelResults[lv];let st="Não atingido";if(r.length){const p=Math.round(r.reduce((a,b)=>a+b,0)/r.length*100);st=p>=60?"Aprovado ("+p+"%)":p+"%";}pcefr.innerHTML+='<tr class="'+(lv===finalLevel?"hl":"")+'"><td>'+lv+"</td><td>"+CEFR[lv].canDo+"</td><td>"+st+"</td></tr>";});
+
+  const pctByLevel={};LEVELS.forEach(lv=>{const r=levelResults[lv];pctByLevel[lv]=r.length?Math.round(r.reduce((a,b)=>a+b,0)/r.length*100):null;});
+  logToSheet({type:"resumo",student:student.name,email:student.email,phone:student.phone,date:student.date,finalLevel:finalLevel,projectedLevel:info.projected,pctA1:pctByLevel.A1,pctA2:pctByLevel.A2,pctB1:pctByLevel.B1,pctB2:pctByLevel.B2,pctC1:pctByLevel.C1,pctC2:pctByLevel.C2});
 
   show("s-result");
 }
